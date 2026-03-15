@@ -1,0 +1,30 @@
+Break the Prison
+
+Description: You are a high profile criminal in a secret vault. A guard protects the prison using rigid rules and simple checks. Outsmart him and escape the prison.
+Topics: SQL Injection + Cryptography
+Hint 1: Missing parameter: uid
+Hint 2: There can be multiple prisoners.
+
+Solution: Break the Prison simulates an internal police system used to access prisoner records and a secure vault. The application exposes two endpoints:
+/profile?uid= — fetches prisoner details
+/vault?secret= — decrypts the flag if the correct clearance is provided
+
+BLOCKED_KEYWORDS = [
+    'or', 'union', 'select', 'insert', 'delete', 'update',
+    'drop', 'sleep', 'benchmark'
+]
+
+BLOCKED_CHARS = [
+    '--', '/*', '*/', ';'
+]
+Pure numeric input is also blocked.
+Only a few payloads could work.
+One of the examples would be LENGTH('AAAA') which reveals the final prisoner:
+Name: Zero
+Clearance Hash: a186a9fa689e175700e5dfc8dbbd0674
+This can be identified as MD5("voila"). This indicates that the clearance secret is: voila
+Source to decode hash: https://md5decrypt.net/en/#google_vignette
+
+
+Final flag: CultRang{5ql_4nd_h45h_m4p5}
+

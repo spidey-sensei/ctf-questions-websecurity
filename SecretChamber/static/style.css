@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    color: #e0e0e0;
+}
+
+.bg::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("/static/background.png");
+    background-size: cover;
+    opacity: 0.85;
+    z-index: -1;
+}
+
+nav {
+    background: rgba(0,0,0,0.8);
+    padding: 15px;
+}
+
+nav a {
+    margin-left: 15px;
+    color: #8be9fd;
+    text-decoration: none;
+}
+
+.card {
+    background: rgba(0,0,0,0.85);
+    padding: 20px;
+    margin: 40px;
+    border-radius: 6px;
+}
+
+.narrow {
+    width: 300px;
+}

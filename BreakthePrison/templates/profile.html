@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Secret Vault Prisoner</title>
+        <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <h1 class="heading">Police Internal System</h1>
+        <p class="content">Restricted inmate profiles: Data of the prisoners in the secret vault can be accessed here.</p>
+
+        <h2>Prisoner Profile</h2>
+        <p>Name: {{ name }}</p>
+        <p>Clearance Hash: {{ chash }}</p>
+        <p>Clearance Level: Vault Access Required</p>
+    </body>
+</html>
+
+

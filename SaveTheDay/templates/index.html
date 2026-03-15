@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ferris Wheel Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Emergency Control Panel</h2>
+
+    <p>
+        The wheel is spinning dangerously fast.<br>
+        Send a diagnostic ping to a control module.
+    </p>
+
+    <form method="POST">
+        <input
+            type="text"
+            name="module"
+            placeholder="http://diagnostics.carnival.local"
+            size="45"
+        >
+        <button type="submit">Send Ping</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>

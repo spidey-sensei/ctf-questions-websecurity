@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Intelligence Bureau</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --panel: #12172a;
+      --panel-2: #0e1324;
+      --accent: #22d3ee;
+      --danger: #fb7185;
+      --success: #4ade80;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(1000px 500px at 10% -10%, #1e293b 0%, transparent 45%), var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 32px 24px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(34,211,238,0.08), transparent);
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 1.9rem;
+      letter-spacing: 0.4px;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 950px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent), var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel-2);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34,211,238,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(34,211,238,0.3);
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 270px;
+      resize: vertical;
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(34,211,238,0.4);
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.06s ease, box-shadow 0.1s ease;
+    }
+
+    button.primary {
+      background: linear-gradient(180deg, rgba(34,211,238,0.45), rgba(34,211,238,0.2));
+      border-color: rgba(34,211,238,0.7);
+      color: #022c22;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    pre {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.82rem;
+      min-height: 270px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .story {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Safeline Intercept</h1>
+   
+    
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="card-header">
+        <h2>Raw HTTP Payload</h2>
+        <span class="badge">Gateway :8080</span>
+      </div>
+      <div class="card-body">
+        <textarea id="request">POST /submit HTTP/1.1
+Host: localhost
+Content-Length: 5
+Transfer-Encoding: chunked
+
+0
+
+GET /admin/flag HTTP/1.1
+Host: localhost
+X-Internal-Access: true
+
+</textarea>
+        <div class="controls">
+          <button class="primary" onclick="sendRequest()">Intercept Safeline</button>
+          <button onclick="resetPayload()">Reset</button>
+        </div>
+       
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Safeline Response</h2>
+        <span class="badge">Backend :9000</span>
+      </div>
+      <div class="card-body">
+        <pre id="response">Awaiting transmission…</pre>
+      </div>
+    </section>
+  </main>
+
+
+
+  <script>
+    async function sendRequest() {
+      const payload = document.getElementById("request").value;
+      const responseBox = document.getElementById("response");
+      responseBox.textContent = "Transmitting payload…";
+
+      try {
+        const res = await fetch("/send", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: payload
+        });
+        const text = await res.text();
+        responseBox.textContent = text;
+      } catch (err) {
+        responseBox.textContent = "Transmission failed.";
+      }
+    }
+
+    function resetPayload() {
+      document.getElementById("request").value = "";
+      document.getElementById("response").textContent = "Cleared.";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+Save the Day: Ferris Wheel Control
+
+Topic: SSRF - DNS Resolution and IP Parsing
+
+Description: You have gone to a carnival where a digitally controlled ferris wheel is spinning at great speed. The kids are trapped inside and the control panel is locked. As a hero engineer, override the wheel's internal controller and issue shutdown command to save the day.
+Hint: The kids don’t know street numbers or coordinates — they only remember names.
+Solution: 
+This challenge contains a Server-Side Request Forgery (SSRF) vulnerability.
+
+The system allows you to send a diagnostic ping to a “module”, but for security reasons:
+1. Direct IP access is blocked.
+2. Numeric and loopback shortcuts are filtered and blocked.
+3. Registered module domains are allowed.
+
+The application trusts DNS resolution more than user input. So instead of supplying an IP address, the supply a DNS name that resolves to localhost. Eg.: http://lvh.me:8081/shutdown
+
+Even though the challenge tries to block hex IPs, hex-encoded IPs bypass the filter due to how Python parses IP addresses.
+Example Hex Input
+http://0x7f000001:8081/shutdown
+
+Flag:Cultrang{55RF_S4v5d_Th3_D4y}
+
+
